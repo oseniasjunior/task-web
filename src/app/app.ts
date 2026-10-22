@@ -1,12 +1,22 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Fruits } from './fruits/fruits';
+import { Employee } from './employee/employee';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, FormsModule,  Employee],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('tasks-web');
+  protected title = signal('tasks-web');
+  protected user = signal({'name': 'Osenias', 'age': 38});
+  // protected title = 'Olá mundo';
+
+  clique(){
+    this.title.set('Valor alterado');
+  }
+
 }

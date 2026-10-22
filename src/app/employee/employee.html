@@ -1,0 +1,41 @@
+<div>
+
+  <span>Usuário logado: {{user.userName}}</span>
+
+  <section>
+    <label>Nome do funcionário</label>
+    <input type="text" [(ngModel)]="employee().name">
+  </section>
+
+  <section>
+    <label>Salário do funcionário</label>
+    <input type="number" [(ngModel)]="employee().salary" >
+  </section>
+
+  <section>
+    <label>Sexo do funcionário</label>
+    <select [(ngModel)]="employee().gender">
+      <option>Masculino</option>
+      <option>Feminino</option>
+    </select>
+  </section>
+
+  <section>
+    <button (click)="add()">Adicionar</button>
+  </section>
+
+  <ul>
+    @for (emp of employees() ; track emp.name) {
+      <li>{{ emp.name }} - {{emp.gender}} - {{emp.salary}}</li>
+    }
+  </ul>
+
+  <app-employee-footer
+    [totals]="totals()"
+    [message]="'Olá mundo'"
+    (event)="onMessageEvent($event)"
+    (receivedTotals)="onReceivedTotals($event)" >
+
+  </app-employee-footer>
+
+</div>

@@ -1,0 +1,9 @@
+<span>Usuário logado: {{user.userName}}</span>
+  <section>
+    <label>Nome</label>
+    <input [(ngModel)]="fruitName">
+  </section>
+
+  <button [disabled]="!fruitName()" (click)="add()" >Adicionar</button>
+
+<app-fruits-list [fruitName]="fruitName()" ></app-fruits-list>
