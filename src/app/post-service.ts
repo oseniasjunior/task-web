@@ -10,7 +10,7 @@ export class PostService {
 
   protected http = inject(HttpClient);
 
-  listAll() : Observable<PostModel[]>{
+  public listAll() : Observable<PostModel[]>{
     return this.http.get<PostModel[]>('https://jsonplaceholder.typicode.com/posts');
   }
 

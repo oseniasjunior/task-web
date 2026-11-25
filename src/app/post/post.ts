@@ -19,7 +19,7 @@ export class Post implements OnInit {
 
   listAll(){
     debugger
-    this.postService.listAll().subscribe(posts => this.posts = posts);
+    // y
   }
 
 }

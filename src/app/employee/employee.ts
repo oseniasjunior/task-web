@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmployeeFooter } from '../employee-footer/employee-footer';
 import { LoggedUser } from '../logged-user';
+import { JsonPipe } from '@angular/common';
 
 export interface EmployeeModel {
   name: string;
@@ -17,27 +18,52 @@ export interface SalaryByGender {
 @Component({
   imports: [
     FormsModule,
-    EmployeeFooter
+    EmployeeFooter,
+    ReactiveFormsModule,
+    JsonPipe
   ],
   selector: 'app-employee',
   styleUrl: './employee.scss',
   templateUrl: './employee.html',
 })
-export class Employee {
+export class Employee implements OnInit {
 
-  protected employee = signal<EmployeeModel>({name: '', salary: 0, gender: ''});
+  // protected employee = signal<EmployeeModel>({name: '', salary: 0, gender: ''});
+  formGroup : FormGroup;
+  formBuilder = inject(FormBuilder);
 
   protected employees = signal<EmployeeModel[]>([]);
   protected totals = signal<SalaryByGender>({male: 0, female: 0});
 
   constructor(protected user: LoggedUser) {
+    this.formGroup = this.createFormGroup();
+  }
 
+  ngOnInit() {
+    this.onChangeGender();
+  }
+
+  private createFormGroup(){
+    return this.formGroup = this.formBuilder.group({
+      name: new FormControl('', [Validators.required]),
+      gender: new FormControl('', [Validators.required]),
+      salary: new FormControl('', [Validators.required]),
+    });
+  }
+
+  onChangeGender (){
+    this.formGroup.controls['gender'].valueChanges.subscribe((value) => {
+      console.log(value);
+      if(value === 'M'){
+        this.formGroup.controls['salary'].setValue(5000);
+      }
+    });
   }
 
 
   protected add(){
-    this.employees.update(oldEmployees => [...oldEmployees, this.employee()]);
-    this.employee.set({name: '', salary: 0, gender: ''});
+    this.employees.update(oldEmployees => [...oldEmployees, this.formGroup.getRawValue()]);
+    this.formGroup.reset({});
     this.calculate();
   }
 
